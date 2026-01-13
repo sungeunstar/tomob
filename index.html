@@ -8,10 +8,14 @@
     :root{
       --bg:#ffffff;
       --fg:#111111;
-      --muted:#8f8f8f;
-      --max:1400px;
-      --g:22px;
-      --radius:18px;
+      --muted:rgba(0,0,0,.42);
+
+      /* 레퍼런스처럼 좌우 여백 크게 */
+      --padX: clamp(22px, 5vw, 84px);
+      --padTop: 28px;
+
+      --g: 22px;
+      --radius: 18px;
     }
 
     *{ box-sizing:border-box; }
@@ -23,7 +27,6 @@
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
       overflow-x:hidden;
     }
-
     a{ color:inherit; text-decoration:none; }
 
     /* Intro */
@@ -69,16 +72,15 @@
       color:rgba(255,255,255,.82);
       font-size:13px;
       letter-spacing:.22em;
+      text-transform: uppercase;
     }
 
     /* Reveal (풀페이지 리빌) */
     .page{
       min-height:100vh;
-      display:block;
-      background:var(--bg);
       opacity:0;
       transform:translateY(28px);
-      clip-path: inset(45% 12% 45% 12%);
+      clip-path: inset(45% 14% 45% 14%);
       transition:
         clip-path 1.05s cubic-bezier(.2,.9,.15,1),
         transform 1.05s cubic-bezier(.2,.9,.15,1),
@@ -91,20 +93,20 @@
       clip-path: inset(0% 0% 0% 0%);
     }
 
-    /* Layout container */
+    /* ✅ 핵심: 가운데 max-width 제거하고 풀페이지로 */
     .container{
-      width:min(var(--max), 100%);
-      margin:0 auto;
-      padding: 26px 22px 80px;
+      width: 100%;
+      margin: 0;
+      padding: var(--padTop) var(--padX) 90px;
     }
 
-    /* Header (선 없는 미니멀) */
+    /* Header */
     .topbar{
       display:grid;
-      grid-template-columns: 160px 1fr 160px;
+      grid-template-columns: 120px 1fr 120px;
       align-items:center;
       column-gap: 16px;
-      padding: 6px 0 24px;
+      padding: 0 0 22px;
     }
     .brand{
       display:flex;
@@ -112,110 +114,88 @@
       gap:10px;
     }
     .mark{
-      width:28px;
-      height:28px;
-      border-radius:8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
       display:grid;
       place-items:center;
-      font-weight:700;
-      font-size:13px;
-      letter-spacing:.06em;
-      background:rgba(0,0,0,.03);
+      background: rgba(0,0,0,.04);
+      font-weight: 600;
+      font-size: 13px;
     }
-    .brandname{
-      font-size:13px;
-      letter-spacing:.08em;
-      color:rgba(0,0,0,.72);
-      text-transform:lowercase;
-    }
-
     .nav{
       display:flex;
       justify-content:center;
-      gap:22px;
-      font-size:13px;
-      color:rgba(0,0,0,.78);
+      gap: 26px;
+      font-size: 13px;
+      color: rgba(0,0,0,.75);
     }
-    .nav a{ padding:6px 2px; opacity:.9; }
-    .nav a:hover{ opacity:1; }
-
+    .nav a{ padding: 6px 2px; }
     .lang{
       display:flex;
       justify-content:flex-end;
-      font-size:12px;
-      color:rgba(0,0,0,.45);
+      font-size: 12px;
+      color: rgba(0,0,0,.45);
     }
 
-    /* Hero + right filter */
+    /* Hero + right filter (레퍼런스처럼 넓게 벌어짐) */
     .heroRow{
       display:grid;
-      grid-template-columns: 1fr 220px;
-      gap: 26px;
+      grid-template-columns: 1fr 240px;
+      gap: clamp(18px, 3vw, 48px);
       align-items:start;
-      padding: 10px 0 18px;
+      padding: 10px 0 22px;
     }
 
     .hero h1{
       margin:0;
-      font-weight:500;
-      letter-spacing:-0.02em;
-      line-height:1.08;
-      font-size: clamp(34px, 4.8vw, 56px);
-      max-width: 22ch;
-    }
-    .hero p{
-      margin: 14px 0 0;
-      color:rgba(0,0,0,.45);
-      font-size:14px;
-      line-height:1.7;
-      max-width: 62ch;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.06;
+      font-size: clamp(44px, 5.2vw, 72px);
+      max-width: 30ch;
     }
 
     .filter{
-      padding-top: 12px;
-      font-size:12px;
-      color:rgba(0,0,0,.55);
+      padding-top: 16px;
+      font-size: 12px;
+      color: rgba(0,0,0,.50);
     }
     .filter .title{
-      font-size:12px;
-      color:rgba(0,0,0,.65);
+      font-size: 12px;
+      color: rgba(0,0,0,.70);
       margin-bottom: 10px;
     }
     .filter a{
       display:block;
-      padding: 6px 0;
-      color:rgba(0,0,0,.4);
+      padding: 5px 0;
+      color: rgba(0,0,0,.36);
     }
-    .filter a.active{
-      color:rgba(0,0,0,.72);
-    }
-    .filter a:hover{
-      color:rgba(0,0,0,.72);
-    }
+    .filter a.active{ color: rgba(0,0,0,.72); }
+    .filter a:hover{ color: rgba(0,0,0,.72); }
 
-    /* Grid */
+    /* Grid (전체 가로폭을 씀) */
     .grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: var(--g);
-      padding-top: 16px;
+      padding-top: 18px;
     }
 
     .card{
       border-radius: var(--radius);
       overflow:hidden;
+      position:relative;
       background:
         linear-gradient(120deg, rgba(120,120,120,.10), rgba(0,0,0,.02)),
-        radial-gradient(1200px 400px at 10% 10%, rgba(120,120,255,.22), transparent 55%),
-        radial-gradient(900px 300px at 90% 30%, rgba(255,120,220,.18), transparent 52%);
-      position:relative;
-      min-height: 240px;
+        radial-gradient(1200px 420px at 10% 10%, rgba(120,120,255,.22), transparent 55%),
+        radial-gradient(980px 340px at 90% 30%, rgba(255,120,220,.18), transparent 52%);
+      min-height: 260px;
     }
-    .card.big{ min-height: 340px; }
-    .card.tall{ min-height: 320px; }
-    .card.wide{ min-height: 260px; }
+    .card.big{ min-height: 420px; }
+    .card.tall{ min-height: 420px; }
+    .card.wide{ min-height: 320px; }
 
-    /* 텍스트는 레퍼런스처럼 구석에 작게 */
     .meta{
       position:absolute;
       left: 18px;
@@ -223,48 +203,46 @@
       right: 18px;
       display:flex;
       justify-content:space-between;
-      gap:12px;
       align-items:flex-end;
-      color:rgba(0,0,0,.68);
+      gap: 12px;
+      color: rgba(0,0,0,.68);
     }
-    .meta .left .t{
-      font-size:13px;
-      font-weight:600;
-      letter-spacing:-0.01em;
+    .meta .t{
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
-    .meta .left .s{
-      margin-top:2px;
-      font-size:12px;
-      color:rgba(0,0,0,.42);
+    .meta .s{
+      margin-top: 2px;
+      font-size: 12px;
+      color: rgba(0,0,0,.42);
     }
-    .meta .right{
-      font-size:12px;
-      color:rgba(0,0,0,.42);
+    .meta .r{
+      font-size: 12px;
+      color: rgba(0,0,0,.42);
     }
 
-    /* spans */
     .span-8{ grid-column: span 8; }
     .span-4{ grid-column: span 4; }
     .span-6{ grid-column: span 6; }
     .span-12{ grid-column: span 12; }
 
-    /* Footer */
     .foot{
-      margin-top: 22px;
-      padding-top: 14px;
-      font-size:12px;
-      color:rgba(0,0,0,.35);
+      margin-top: 26px;
+      font-size: 12px;
+      color: rgba(0,0,0,.35);
     }
 
     @media (max-width: 980px){
       .topbar{ grid-template-columns: 1fr auto; }
       .nav{ display:none; }
-      .heroRow{ grid-template-columns: 1fr; gap:14px; }
+      .heroRow{ grid-template-columns: 1fr; }
       .filter{ display:none; }
       .grid{ grid-template-columns: repeat(6, 1fr); }
       .span-8,.span-4,.span-6,.span-12{ grid-column: span 6; }
       .card.big{ min-height: 260px; }
       .card.tall{ min-height: 240px; }
+      .card.wide{ min-height: 240px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -286,7 +264,6 @@
       <header class="topbar">
         <div class="brand">
           <div class="mark">t</div>
-          <div class="brandname">tomob</div>
         </div>
 
         <nav class="nav">
@@ -297,20 +274,18 @@
           <a href="#contact">Contact</a>
         </nav>
 
-        <div class="lang">일본어</div>
+        <div class="lang">일본어 ▾</div>
       </header>
 
       <section class="heroRow" id="work">
         <div class="hero">
           <h1>A Studio That Engaged in All Aspects of Creative Work for Branding.</h1>
-          <p>
-            tomob 포트폴리오. 인트로 로고 후, 화면이 가운데에서 위로 펼쳐지며 페이지가 등장하는 형태.
-          </p>
         </div>
 
         <aside class="filter" aria-label="filters">
           <div class="title">모두</div>
           <a class="active" href="#work">Brand</a>
+          <a href="#work">글로벌</a>
           <a href="#work">Independent</a>
           <a href="#work">Promotion</a>
           <a href="#work">Recruit</a>
@@ -321,51 +296,51 @@
       <section class="grid" aria-label="portfolio grid">
         <article class="card big span-8">
           <div class="meta">
-            <div class="left">
+            <div>
               <div class="t">Brand System</div>
               <div class="s">Identity</div>
             </div>
-            <div class="right">2026</div>
+            <div class="r">2026</div>
           </div>
         </article>
 
         <article class="card tall span-4">
           <div class="meta">
-            <div class="left">
+            <div>
               <div class="t">Web Experience</div>
               <div class="s">Independent</div>
             </div>
-            <div class="right">Case</div>
+            <div class="r">Case</div>
           </div>
         </article>
 
         <article class="card wide span-6">
           <div class="meta">
-            <div class="left">
+            <div>
               <div class="t">UX Direction</div>
               <div class="s">Product</div>
             </div>
-            <div class="right">UI</div>
+            <div class="r">UI</div>
           </div>
         </article>
 
         <article class="card wide span-6">
           <div class="meta">
-            <div class="left">
+            <div>
               <div class="t">Illustration</div>
               <div class="s">Promotion</div>
             </div>
-            <div class="right">Art</div>
+            <div class="r">Art</div>
           </div>
         </article>
 
-        <article class="card span-12" id="about" style="min-height:170px;">
+        <article class="card span-12" id="about" style="min-height:200px;">
           <div class="meta">
-            <div class="left">
+            <div>
               <div class="t">About</div>
               <div class="s">짧은 소개 문장</div>
             </div>
-            <div class="right">Studio</div>
+            <div class="r">Studio</div>
           </div>
         </article>
       </section>
