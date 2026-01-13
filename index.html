@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio</title>
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #8a8a8a;
+      --border: rgba(0,0,0,.08);
+      --shadow: 0 18px 60px rgba(0,0,0,.10);
+      --radius: 18px;
+      --max: 1200px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      overflow-x: hidden;
+    }
+
+    /* Intro */
+    .intro{
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #0b0b0b;
+      z-index: 50;
+      transition: opacity .45s ease, visibility .45s ease;
+    }
+    .intro.is-hidden{
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .intro__logo{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width: 84px;
+      height: 84px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      color: rgba(255,255,255,.92);
+      letter-spacing: .12em;
+      font-weight: 600;
+      transform: translateY(6px);
+      opacity: 0;
+      animation: logoIn .6s ease forwards;
+    }
+    @keyframes logoIn{
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Reveal stage */
+    .stage{
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    /* "화면이 가운데서 위로 펼쳐지는" 메인 컨테이너 */
+    .reveal{
+      width: min(var(--max), 100%);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+
+      /* 초기엔 가운데 얇은 슬릿처럼 보이게 */
+      clip-path: inset(48% 12% 48% 12% round var(--radius));
+      transform: translateY(48px) scale(.98);
+      opacity: 0;
+
+      transition:
+        clip-path 1.05s cubic-bezier(.2,.9,.15,1),
+        transform 1.05s cubic-bezier(.2,.9,.15,1),
+        opacity .55s ease;
+      will-change: clip-path, transform, opacity;
+    }
+
+    body.is-ready .reveal{
+      /* 위로 열리면서 전체가 보이게 */
+      clip-path: inset(0% 0% 0% 0% round var(--radius));
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* Header */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 18px;
+      padding: 22px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 160px;
+    }
+    .mark{
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display:grid;
+      place-items:center;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    nav{
+      display:flex;
+      gap: 18px;
+      align-items:center;
+      justify-content:center;
+      flex: 1;
+    }
+    nav a{
+      text-decoration:none;
+      color: var(--fg);
+      font-size: 13px;
+      opacity: .85;
+      padding: 8px 6px;
+    }
+    nav a:hover{ opacity: 1; }
+    .lang{
+      min-width: 160px;
+      display:flex;
+      justify-content:flex-end;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Hero */
+    .hero{
+      padding: 34px 22px 10px;
+    }
+    .hero h1{
+      margin:0;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      font-size: clamp(26px, 4vw, 46px);
+    }
+    .hero p{
+      margin: 14px 0 0;
+      color: var(--muted);
+      max-width: 62ch;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* Grid */
+    .grid{
+      padding: 22px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+    .card{
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow:hidden;
+      background: #fff;
+      position: relative;
+      min-height: 220px;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 22px 70px rgba(0,0,0,.12);
+    }
+    .thumb{
+      width:100%;
+      height:100%;
+      background:
+        linear-gradient(120deg, rgba(120,120,120,.12), rgba(0,0,0,.02)),
+        radial-gradient(1200px 400px at 10% 10%, rgba(120,120,255,.22), transparent 55%),
+        radial-gradient(900px 300px at 90% 30%, rgba(255,120,220,.20), transparent 52%);
+      transform: scale(1.02);
+    }
+    .meta{
+      position:absolute;
+      left: 14px;
+      bottom: 14px;
+      right: 14px;
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      align-items:flex-end;
+      color: rgba(0,0,0,.72);
+    }
+    .meta .title{
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .meta .tag{
+      font-size: 12px;
+      color: rgba(0,0,0,.52);
+    }
+
+    /* Layout sizes like your example */
+    .span-8{ grid-column: span 8; }
+    .span-4{ grid-column: span 4; }
+    .span-6{ grid-column: span 6; }
+    .span-12{ grid-column: span 12; }
+
+    @media (max-width: 980px){
+      nav{ display:none; }
+      .lang{ min-width:auto; }
+      .grid{ grid-template-columns: repeat(6, 1fr); }
+      .span-8,.span-4,.span-6,.span-12{ grid-column: span 6; }
+      .card{ min-height: 200px; }
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .intro__logo{ animation: none; opacity: 1; transform:none; }
+      .reveal{ transition: none; opacity: 1; clip-path: none; transform:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Intro -->
+  <div class="intro" id="intro" aria-label="intro">
+    <div class="intro__logo">S</div>
+  </div>
+
+  <!-- Main stage -->
+  <main class="stage">
+    <section class="reveal" aria-label="portfolio">
+      <header>
+        <div class="brand">
+          <div class="mark">S</div>
+        </div>
+
+        <nav>
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#case">Case Study</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="lang">일본어</div>
+      </header>
+
+      <section class="hero" id="work">
+        <h1>A Studio That Engaged in All Aspects of Creative Work for Branding.</h1>
+        <p>
+          포트폴리오를 심플하게 보여주는 구조. 첫 화면은 로고 인트로, 다음은 가운데에서 위로 펼쳐지는 리빌 애니메이션.
+        </p>
+      </section>
+
+      <section class="grid" aria-label="work grid">
+        <article class="card span-8">
+          <div class="thumb"></div>
+          <div class="meta">
+            <div>
+              <div class="title">Brand System</div>
+              <div class="tag">Identity</div>
+            </div>
+            <div class="tag">2026</div>
+          </div>
+        </article>
+
+        <article class="card span-4">
+          <div class="thumb"></div>
+          <div class="meta">
+            <div>
+              <div class="title">Web Experience</div>
+              <div class="tag">Independent</div>
+            </div>
+            <div class="tag">Case</div>
+          </div>
+        </article>
+
+        <article class="card span-6">
+          <div class="thumb"></div>
+          <div class="meta">
+            <div>
+              <div class="title">UX Direction</div>
+              <div class="tag">Product</div>
+            </div>
+            <div class="tag">UI</div>
+          </div>
+        </article>
+
+        <article class="card span-6">
+          <div class="thumb"></div>
+          <div class="meta">
+            <div>
+              <div class="title">Illustration</div>
+              <div class="tag">Promotion</div>
+            </div>
+            <div class="tag">Art</div>
+          </div>
+        </article>
+
+        <article class="card span-12" id="about" style="min-height:160px;">
+          <div class="thumb" style="opacity:.55;"></div>
+          <div class="meta">
+            <div>
+              <div class="title">About</div>
+              <div class="tag">짧은 소개 문장</div>
+            </div>
+            <div class="tag">Studio</div>
+          </div>
+        </article>
+      </section>
+
+      <section style="padding: 0 22px 26px; color: var(--muted); font-size:12px;">
+        © Portfolio
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // 인트로 유지 시간
+    const INTRO_MS = 900;
+
+    const intro = document.getElementById("intro");
+
+    // 페이지 로딩 후 "로고 인트로" -> "리빌" 순서
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        intro.classList.add("is-hidden");
+        document.body.classList.add("is-ready");
+      }, INTRO_MS);
+    });
+  </script>
+</body>
+</html>
